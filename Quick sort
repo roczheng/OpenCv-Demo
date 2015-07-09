@@ -1,0 +1,57 @@
+#include <stdio.h>
+//Data swop function
+void Swap(int &p,int &q)
+{
+     int temp = p;
+       p=q;
+       q=temp;
+}
+ 
+//Partition function
+int Partition(int ArrayInput[],int nLow,int nHigh)
+{
+                                                                           
+    int nTemp=ArrayInput[nHigh];
+    int i = nLow, j=nLow-1;
+       for(; i<nHigh; i++)
+       {
+              if( ArrayInput[i]<=nTemp )
+              {
+                     j++;
+                     if(i !=j )
+                     {
+                           Swap(ArrayInput[i], ArrayInput[j]);
+                     }
+              }
+       }
+     
+       Swap(ArrayInput[j+1],ArrayInput[nHigh]);
+ 
+    return (j+1);
+}
+ 
+//Quick sort
+void Quick_sort(int ArrayInput[],int nLow,int nHigh)
+{
+    if(nLow < nHigh)
+    {
+        int nIndex=Partition(ArrayInput , nLow, nHigh);
+        Quick_sort(ArrayInput , nLow, nIndex-1);
+        Quick_sort(ArrayInput , nIndex+1, nHigh);
+    }
+}
+int main()
+{
+ int arr[10]={1,2,12,3,21,34,65,43,54,67};
+ for(int i=0;i<=9;i++)
+ {
+  printf("%3d ",arr[i]);
+ }
+ printf("\n");
+ Quick_sort(arr,0,9);
+ for( i=0;i<=9;i++)
+ {
+  printf("%3d ",arr[i]);
+ }
+ printf("\n");
+}

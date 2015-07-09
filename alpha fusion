@@ -1,0 +1,25 @@
+#include "cv.h"
+#include "highgui.h"
+
+int main(int argc,char** argv)
+{
+ IplImage* src1,*src2;
+ src1=cvLoadImage("D:\\图片素材\\lena.jpg",1);
+ src2=cvLoadImage("D:\\图片素材\\lena2.jpg",1);
+ 
+  int x=0;
+  int y=0;
+  int width=100;
+  int height=50;
+  double alpha=0.5;
+  double beta=0.5;
+  cvSetImageROI(src1,cvRect(x,y,width,height));
+  cvSetImageROI(src2,cvRect(0,0,width,height));
+  cvAddWeighted(src1,alpha,src2,beta,0.0,src1);
+  cvResetImageROI(src1);
+  cvNamedWindow("Alpha_blend",1);
+  cvShowImage("Alpha_blend",src1);
+  cvWaitKey(5000);
+ 
+ return 0;
+}

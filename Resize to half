@@ -1,0 +1,18 @@
+IplImage* doPyrDown(IplImage* in,int filter=CV_GAUSSIAN_5x5)
+{
+ //Best to make sure inout image is divisible by two
+ assert(in->width%2==0&&in->height%2==0);
+ IplImage* out=cvCreateImage(cvSize(in->width*2,in->height*2),in->depth,in->nChannels);
+ cvPyrDown(in,out);
+ return(out);
+}
+int main(int argc)
+{
+ IplImage* image=cvLoadImage("D:\\图片素材\\lena.jpg");
+
+ IplImage* out2=doPyrDown(image);
+ cvNamedWindow("Example5");
+ cvShowImage("Example5",out2);
+ cvWaitKey(5000);
+ cvDestroyWindow("Example5");
+}

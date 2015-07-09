@@ -1,0 +1,29 @@
+IplImage* doPyrDown(IplImage* in,int filter=IPL_GAUSSIAN_5x5)
+{
+ //Best to make sure inout image is divisible by two
+ assert(in->width%2==0&&in->height%2==0);
+ IplImage* out=cvCreateImage(cvSize(in->width/2,in->height/2),in->depth,in->nChannels);
+ cvPyrDown(in,out);
+ return(out);
+}
+IplImage* doCanny(IplImage* in,double lowThresh,double highThresh,double aperture)
+{
+ IplImage* out=cvCreateImage(cvSize(in->width,in->height),IPL_DEPTH_8U,1);
+ cvCanny(in,out,lowThresh,highThresh,aperture);
+ return(out);
+}
+int main(int argc)
+{
+ IplImage* image=cvLoadImage("D:\\图片素材\\lena.jpg");
+ //example2_4(image);
+ IplImage* img1=doPyrDown(image);
+ IplImage* img2=doPyrDown(img1);
+ IplImage* img3=doCanny(img2,10,100,3);
+ cvNamedWindow("Example5");
+ cvShowImage("Example5",img3);
+ cvWaitKey(5000);
+ cvReleaseImage(&img1);
+ cvReleaseImage(&img2);
+ cvReleaseImage(&img3);
+ cvDestroyWindow("Example5");
+}

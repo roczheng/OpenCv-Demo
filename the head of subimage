@@ -1,0 +1,9 @@
+IplImage* sub_img=cvCreateImageHeader{
+ cvSize(interest_rect.width,interest_rect.height),
+ interest_img->depth,
+ interest_img->nChannels
+};
+sub_img->origin=interest_img->origin;
+sub->img=widthStep=interest_img->imageData+interest_rect.y*interest_img->widthStep+interst_rect.x*interest_img->nChannels;
+cvAddS(sub_img,cvScaler(1),sub_img);
+cvReleaseImageHeader(&sub_img);

@@ -1,0 +1,46 @@
+#include <iostream>
+#include <omp.h>
+#include <opencv2/nonfree/features2d.hpp>
+#include <opencv2/nonfree/nonfree.hpp>
+#include<opencv2/legacy/legacy.hpp> 
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/features2d/features2d.hpp"
+
+int main(){
+     cv::SurfFeatureDetector detector(400);  
+ cv::SurfDescriptorExtractor extractor;
+     cv::BruteForceMatcher<cv::L2<float> > matcher;
+     std::vector< cv::DMatch > matches;
+     cv::Mat im0, im1;
+    std::vector<cv::KeyPoint> keypoints0, keypoints1;
+     cv::Mat descriptors0, descriptors1;
+     double t1 = omp_get_wtime();
+ #pragma omp parallel sections
+    {
+ #pragma omp section
+         {
+             std::cout << "processing im0" << std::endl;
+             im0 = cv::imread("rgb0.jpg", CV_LOAD_IMAGE_GRAYSCALE);
+             detector.detect(im0, keypoints0);
+             extractor.compute(im0, keypoints0, descriptors0);
+             std::cout << "find " << keypoints0.size() << "keypoints in im0" << std::endl;
+         }
+ #pragma omp section
+         {
+             std::cout << "processing im1" << std::endl;
+             im1 = cv::imread("rgb1.jpg", CV_LOAD_IMAGE_GRAYSCALE);
+             detector.detect(im1, keypoints1);
+             extractor.compute(im1, keypoints1, descriptors1);
+             std::cout << "find " << keypoints1.size() << "keypoints in im1" << std::endl;
+        }
+     }
+     double t2 = omp_get_wtime();
+     std::cout << "time: " << t2 - t1 << std::endl;
+     matcher.match(descriptors0, descriptors1, matches);
+     cv::Mat img_matches;
+     cv::drawMatches(im0, keypoints0, im1, keypoints1, matches, img_matches);
+     cv::namedWindow("Matches", CV_WINDOW_AUTOSIZE);
+     cv::imshow("Matches", img_matches);
+     cv::waitKey(0);
+     return 1;
+}

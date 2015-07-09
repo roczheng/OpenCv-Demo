@@ -1,0 +1,70 @@
+#include "cv.h"
+#include "highgui.h"
+/*
+void example2_4(IplImage* image)
+{
+ //Create some window to show the input and output image in.
+ cvNamedWindow("Example4_in");
+ cvNamedWindow("Example4_out");
+ //Creat a window to show our inoput image
+ cvShowImage("Example4_in",image);
+ //Create an image to hold the smoothed output
+ IplImage* out=cvCreateImage(cvGetSize(image),IPL_DEPTH_8U,3);
+ //Do the smoothing
+ cvSmooth(image,out,CV_GAUSSIAN,3,3);
+ //Show the smoothed image in the output window
+ cvShowImage("Exaple4_out",out);
+ //Be tidy
+ 
+ //Wait for the user to hit a kay,then clean up the windows
+ cvWaitKey(0);
+ cvDestroyWindow("Example4_in");
+ cvDestroyWindow("Example4_out");
+}
+
+*/
+
+IplImage* doPyrDown(IplImage* in,int filter=IPL_GAUSSIAN_5x5)
+{
+        //Best to make sure inout image is divisible by two
+
+        assert(in->width%2==0&&in->height%2==0);
+
+        IplImage* out=cvCreateImage(cvSize(in->width/2,in->height/2),in->depth,in->nChannels);
+
+        cvPyrDown(in,out);
+        return(out);
+}
+
+IplImage* doCanny(IplImage* in,double lowThresh,double highThresh,double aperture)
+{
+        IplImage* out=cvCreateImage(cvSize(in->width,in->height),IPL_DEPTH_8U,1);
+        cvCanny(in,out,lowThresh,highThresh,aperture);
+        return(out);
+}
+int main(int argc)
+{
+ //IplImage* image=cvLoadImage("D:\\图片素材\\lena.jpg");
+ //example2_4(image);
+
+ CvCapture* capture;
+ if(1==argc)
+ {
+         capture=cvCreateCameraCapture(0);
+ }
+ else
+ {
+         capture=cvCreateFileCapture("D:\\图片素材\\lena.jpg");
+ }
+ assert(capture!=NULL);
+ /*IplImage* img1=doPyrDown(image);
+ IplImage* img2=doPyrDown(img1);
+ IplImage* img3=doCanny(img2,10,100,3);
+ cvNamedWindow("Example5");
+ cvShowImage("Example5",img3);
+ cvWaitKey(5000);
+ cvReleaseImage(&img1);
+ cvReleaseImage(&img2);
+ cvReleaseImage(&img3);
+ cvDestroyWindow("Example5");*/
+}

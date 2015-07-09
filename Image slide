@@ -1,0 +1,27 @@
+#include "cv.h"
+#include "highgui.h"
+void example2_4(IplImage* image)
+{
+ //Create some window to show the input and output image in.
+ cvNamedWindow("Example4_in");
+    cvNamedWindow("Example4_out");
+ //Creat a window to show our inoput image
+ cvShowImage("Example4_in",image);
+ //Create an image to hold the smoothed output
+ IplImage* out=cvCreateImage(cvGetSize(image),IPL_DEPTH_8U,3);
+ //Do the smoothing
+ cvSmooth(image,out,CV_GAUSSIAN,3,3);
+ //Show the smoothed image in the output window
+ cvShowImage("Exaple4_out",out);
+ //Be tidy
+ cvReleaseImage(&out);
+ //Wait for the user to hit a kay,then clean up the windows
+ cvWaitKey(0);
+ cvDestroyWindow("Example4_in");
+ cvDestroyWindow("Example4_out");
+}
+int main(int argc)
+{
+ IplImage* image=cvLoadImage("D:\\图片素材\\lena.jpg");
+ example2_4(image);
+}
